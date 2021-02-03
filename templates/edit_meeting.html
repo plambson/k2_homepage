@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block head %}{% endblock %}
+{% block content %}
+<h3> Edit {{meeting['title']}}</h3>
+<form action="{{ url_for('update') }}" method="post">
+    <div class="mb-3">
+        <label for="meetingTitle" class="form-label">Title</label>
+        <input type="text" class="form-control" id="meetingTitle" name="meetingTitle" value="{{ meeting['title'] }}">
+    </div>
+    <div class="mb-3">
+        <label for="meetingDescription" class="form-label">Description</label>
+        <input type="text" class="form-control" id="meetingDescription" name="meetingDescription"
+               value="{{ meeting['description'] }}">
+    </div>
+    <div class="mb-3">
+        <label for="meetingTime" class="form-label">Time</label>
+        <input type="text" class="form-control" id="meetingTime" name="meetingTime" value="{{ meeting['time'] }}">
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="freq_1" name="freq_1" {% if 1 in meeting['frequency']
+            %} checked {% endif %} >
+            <label class="form-check-label" for="freq_1">
+                First Sunday
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="freq_2" name="freq_2" {% if 2 in meeting['frequency']
+            %} checked {% endif %} >
+            <label class="form-check-label" for="freq_2">
+                Second Sunday
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="freq_3" name="freq_3" {% if 3 in meeting['frequency']
+            %} checked {% endif %} >
+            <label class="form-check-label" for="freq_3">
+                Third Sunday
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="freq_4" name="freq_4" {% if 4 in meeting['frequency']
+            %} checked {% endif %} >
+            <label class="form-check-label" for="freq_4">
+                Fourth Sunday
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="freq_5" name="freq_5" {% if 5 in meeting['frequency']
+            %} checked {% endif %} >
+            <label class="form-check-label" for="freq_5">
+                Fifth Sunday
+            </label>
+        </div>
+
+        <div class="mb-3">
+            <label for="meetingLink" class="form-label">Link</label>
+            <input type="text" class="form-control" id="meetingLink" name="meetingLink" value="{{ meeting['link'] }}">
+        </div>
+        <input type="hidden" id="index_pos" name="index_pos" value="{{ index_pos }}">
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+</form>
+<p><a class="btn btn-secondary" href="/list_meetings" role="button"> Back </a></p>
+{% endblock %}

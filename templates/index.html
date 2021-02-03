@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block head %}{% endblock %}
+{% block content %}
+<main role="main">
+    <div class="container">
+        <h1 class="text-center shadow-none bg-light rounded">Schedule for {{config.dates[config.date_int]}}</h1>
+        <div class="row">
+            {% for meeting in config.meetings %}
+            <div class="col-md-4 shadow-sm">
+                <h2>{{ meeting['title'] }}</h2>
+                <p>{{ meeting['description'] }}</p>
+                <form action="/meeting" method="GET" role="form">
+                    <div class="form-group">
+                        <input type="hidden" name="meeting_title" value="{{ meeting['title'] }}"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" name="meting_link" value="{{ meeting['link'] }}"/>
+                    </div>
+                    <button type="submit" class="btn btn-secondary">{{ meeting['time'] }}
+                    </button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="container">
+        <h1 class="text-center shadow-none bg-light rounded">Additional Resources</h1>
+        <div class="accordion" id="accordionExample">
+            {% for accordion in config.accordions %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="{{ loop.index }}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse{{ loop.index }}" aria-expanded="false"
+                            aria-controls="collapse{{ loop.index }}">
+                        {{ accordion['header'] }}
+                    </button>
+                </h2>
+                <div id="collapse{{ loop.index }}" class="accordion-collapse collapse"
+                     aria-labelledby="{{ loop.index }}"
+                     data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        {{ accordion['description'] }}
+                        <div class="list-group">
+                            {% for key, value in accordion['links'].items() %}
+                            <a href="{{ value }}" class="list-group-item list-group-item-action">{{ key }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="alt_date">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse_alt_date" aria-expanded="false"
+                            aria-controls="collapse_alt_date">
+                        Choose Alternate Date
+                    </button>
+                </h2>
+                <div id="collapse_alt_date" class="accordion-collapse collapse"
+                     aria-labelledby="alt_date"
+                     data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        Choose a date to see the agenda for that Sunday
+                        <div class="list-group">
+                            {% for n in range(config.dates| length) %}
+                            <a href="/modify?integer={{ n }}" class="list-group-item list-group-item-action">{{config.dates[n]}}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block head %}{% endblock %}
+{% block content %}
+<h3> Create Meeting</h3>
+<form action="{{ url_for('create') }}" method="post">
+    <div class="mb-3">
+        <label for="meetingTitle" class="form-label">Title</label>
+        <input type="text" class="form-control" id="meetingTitle" name="meetingTitle">
+    </div>
+    <div class="mb-3">
+        <label for="meetingDescription" class="form-label">Description</label>
+        <input type="text" class="form-control" id="meetingDescription" name="meetingDescription">
+    </div>
+    <div class="mb-3">
+        <label for="meetingTime" class="form-label">Time</label>
+        <input type="text" class="form-control" id="meetingTime" name="meetingTime">
+    </div>
+
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="freq_1" name="freq_1">
+        <label class="form-check-label" for="freq_1">
+            First Sunday
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="freq_2" name="freq_2">
+        <label class="form-check-label" for="freq_2">
+            Second Sunday
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="freq_3" name="freq_3">
+        <label class="form-check-label" for="freq_3">
+            Third Sunday
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="freq_4" name="freq_4">
+        <label class="form-check-label" for="freq_4">
+            Fourth Sunday
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="freq_5" name="freq_5">
+        <label class="form-check-label" for="freq_5">
+            Fifth Sunday
+        </label>
+    </div>
+
+    <div class="mb-3">
+        <label for="meetingLink" class="form-label">Link</label>
+        <input type="text" class="form-control" id="meetingLink" name="meetingLink">
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+{% endblock %}
