@@ -2,14 +2,17 @@
 {% block title %}{{ title }}{% endblock %}
 {% block head %}{% endblock %}
 {% block content %}
-<main role="main">
+<main role="main" id="main" class="section-main">
     <div class="container">
-        <h1 class="text-center shadow-none bg-light rounded">Schedule for {{config.dates[config.date_int]}}</h1>
+        <div class="u-center-text u-margin-bottom-big">
+            <h1 class="text-center shadow-none bg-light rounded">Schedule for {{config.dates[config.date_int]}}</h1>
+        </div>
         <div class="row">
             {% for meeting in config.meetings %}
-            <div class="col-md-4 shadow-sm">
-                <h2>{{ meeting['title'] }}</h2>
-                <p>{{ meeting['description'] }}</p>
+            <div class="col-md-3">
+                <div class="schedule-box">
+                <h2 class="heading-tertiary u-margin-bottom-small">{{ meeting['title'] }}</h2>
+                <p class="feature-box__text">{{ meeting['description'] }}</p>
                 <form action="/meeting" method="GET" role="form">
                     <div class="form-group">
                         <input type="hidden" name="meeting_title" value="{{ meeting['title'] }}"/>
@@ -21,11 +24,16 @@
                     </button>
                 </form>
             </div>
+        </div>
             {% endfor %}
         </div>
     </div>
+
     <div class="container">
-        <h1 class="text-center shadow-none bg-light rounded">Additional Resources</h1>
+        <div class="u-center-text u-margin-bottom-big u-margin-top-big">
+            <h1 class="text-center shadow-none bg-light rounded">Additional Resources</h1>
+        </div>
+        
         <div class="accordion" id="accordionExample">
             {% for accordion in config.accordions %}
             <div class="accordion-item">

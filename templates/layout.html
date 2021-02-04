@@ -8,6 +8,7 @@
     <meta name="author" content="">
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-45HVG3PKH5"></script>
+
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
@@ -15,11 +16,16 @@
 
       gtag('config', 'G-45HVG3PKH5');
 
+
     </script>
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
     <!-- Bootstrap core CSS -->
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
     <title>{% block title %}{% endblock %}</title>
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -31,20 +37,26 @@
     {% endif %}
     {% endwith %}
 </head>
-<div class="bg-light">
+<div class="bg-light header">
     <div class="container">
-        <img src="{{ config.header.hero_image }}" class="img-fluid" alt="Responsive image">
-        <h1 class="display-4">{{ config.header.title }}</h1>
-        <h3 class="display-5">{{ config.header.subtitle }}</h3>
+
+        <div class="header__text-box">
+            <!-- <img src="{{ config.header.hero_image }}" class="img-fluid" alt="Responsive image"> -->
+            <div class="heading-primary">
+                <span class="display-4 heading-primary--main">{{ config.header.title }}</span>
+                <span class="display-5 heading-primary--sub">{{ config.header.subtitle }}</span>
+            </div>
+            <a href="#main" class="btn btn--white">Discover Schedule </a>
+        </div>
     </div>
 </div>
 <body>
 <div id="content" class="container">
     {% block content %}{% endblock %}
 </div>
-<div class="container" id="footer">
-
-</div>
+<p class="footer__copyright">
+    Copyright &copy;2021 kingsbridge
+</p>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
