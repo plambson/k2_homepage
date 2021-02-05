@@ -18,6 +18,12 @@ def fetch_meetings():
     return meetings
 
 
+def fetch_conferences():
+    datastore_client = datastore.Client()
+    query = datastore_client.query(kind='conference')
+    meetings = list(query.fetch())
+    return meetings
+
 def fetch_messages(key):
     datastore_client = datastore.Client()
     query = datastore_client.query(kind=os.environ["datastore_comms"] )

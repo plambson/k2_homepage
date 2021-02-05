@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block head %}{% endblock %}
+{% block content %}
+<h3> Create Meeting</h3>
+<form action="{{ url_for('create_conference') }}" method="post">
+    <div class="mb-3">
+        <label for="conferenceTitle" class="form-label">Title</label>
+        <input type="text" class="form-control" id="conferenceTitle" name="conferenceTitle">
+    </div>
+    <div class="mb-3">
+        <label for="conferenceDescription" class="form-label">Description</label>
+        <input type="text" class="form-control" id="conferenceDescription" name="conferenceDescription">
+    </div>
+    <div class="mb-3">
+        <label for="conferenceDate" class="form-label">Date</label>
+        <input type="text" class="form-control" id="conferenceDate" name="conferenceDate">
+    </div>
+    <div class="mb-3">
+        <label for="conferenceTime" class="form-label">Time</label>
+        <input type="text" class="form-control" id="conferenceTime" name="conferenceTime">
+    </div>
+    <div class="mb-3">
+        <label for="conferenceLink" class="form-label">Link</label>
+        <input type="text" class="form-control" id="conferenceLink" name="conferenceLink">
+    </div>
+    <button type="submit" class="btn btn-primary">Create Conference</button>
+    </div>
+</form>
+{% endblock %}

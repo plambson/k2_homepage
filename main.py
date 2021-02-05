@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect
 import config
 import os
 from helper_functions import get_dates, load_meetings
-from datastore_helper import fetch_meetings
+from datastore_helper import fetch_meetings, fetch_conferences
 from google.cloud import datastore
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "kingsbridge2-81ce0161a48e.json"
@@ -11,11 +11,12 @@ app.secret_key = config.secret_key
 app.config.header = config.header
 app.config.dates, app.config.integers, app.config.full_dates = get_dates()
 app.config.all_meetings = fetch_meetings()
+app.config.conferences = fetch_conferences()
 app.config.date_int = 0  # initial sunday to show on the homepage, upcoming sunday
 app.config.meetings = load_meetings(app.config.full_dates,
                                     app.config.integers,
                                     app.config.date_int,
-                                    config.conferences,
+                                    app.config.conferences,
                                     app.config.all_meetings)
 app.config.accordions = config.additional_info
 
@@ -47,7 +48,7 @@ def modify():
     app.config.meetings = load_meetings(app.config.full_dates,
                                         app.config.integers,
                                         app.config.date_int,
-                                        config.conferences,
+                                        app.config.conferences,
                                         app.config.all_meetings)
     return redirect('/')
 
@@ -59,12 +60,29 @@ def list_meetings():
                            )
 
 
+@app.route('/list_conferences')
+def list_conferences():
+    return render_template('list_conferences.html',
+                           title='Conference List'
+                           )
+
+
 @app.route('/edit', methods=['GET'])
 def edit():
     index_pos = int(request.args.get('index_position'))
     return render_template('edit_meeting.html',
                            title='Edit Meeting',
                            meeting=app.config.all_meetings[index_pos],
+                           index_pos=index_pos
+                           )
+
+
+@app.route('/edit_conference', methods=['GET'])
+def edit_conference():
+    index_pos = int(request.args.get('index_position'))
+    return render_template('edit_conference.html',
+                           title='Edit Meeting',
+                           conference=app.config.conferences[index_pos],
                            index_pos=index_pos
                            )
 
@@ -79,15 +97,37 @@ def delete():
     app.config.meetings = load_meetings(app.config.full_dates,
                                         app.config.integers,
                                         app.config.date_int,
-                                        config.conferences,
+                                        app.config.conferences,
                                         app.config.all_meetings)
     return redirect('/list_meetings')
+
+
+@app.route('/delete_conference', methods=['GET', 'POST'])
+def delete_conference():
+    index_pos = int(request.args.get('index_position'))
+    key = app.config.all_meetings[index_pos].key
+    client = datastore.Client()
+    client.delete(key)
+    app.config.conferences = fetch_conferences()
+    app.config.meetings = load_meetings(app.config.full_dates,
+                                        app.config.integers,
+                                        app.config.date_int,
+                                        app.config.conferences,
+                                        app.config.all_meetings)
+    return redirect('/list_conferences')
 
 
 @app.route('/new')
 def new():
     return render_template('new_meeting.html',
                            title='Create Meeting'
+                           )
+
+
+@app.route('/new_conference')
+def new_conference():
+    return render_template('new_conference.html',
+                           title='Create Conference'
                            )
 
 
@@ -125,6 +165,28 @@ def update():
     return redirect('/list_meetings')
 
 
+@app.route('/update_conference', methods=['POST'])
+def update_conference():
+    client = datastore.Client()
+    key = app.config.conferences[int(request.form.get('index_pos'))].key
+    entity = datastore.Entity(key=key)
+    entity.update({
+        'title': request.form.get('conferenceTitle'),
+        'description': request.form.get('conferenceDescription'),
+        'date': request.form.get('conferenceDate'),
+        'time': request.form.get('conferenceTime'),
+        'link': request.form.get('conferenceLink')
+    })
+    client.put(entity)
+    app.config.conferences = fetch_conferences()
+    app.config.meetings = load_meetings(app.config.full_dates,
+                                        app.config.integers,
+                                        app.config.date_int,
+                                        config.conferences,
+                                        app.config.all_meetings)
+    return redirect('/list_conferences')
+
+
 @app.route('/create', methods=['POST'])
 def create():
     # create freq list
@@ -160,6 +222,32 @@ def create():
                                         config.conferences,
                                         app.config.all_meetings)
     return redirect('/list_meetings')
+
+
+@app.route('/create_conference', methods=['POST'])
+def create_conference():
+
+    client = datastore.Client()
+    kind = "conference"
+    name = request.form.get('conferenceTitle')
+    conference_key = client.key(kind, name)
+    # Prepares the new entity
+    conference = datastore.Entity(key=conference_key)
+    conference['title'] = request.form.get('conferenceTitle')
+    conference['description'] = request.form.get('conferenceDescription')
+    conference['date'] = request.form.get('conferenceDate')
+    conference['time'] = request.form.get('conferenceTime')
+    conference['link'] = request.form.get('conferenceLink')
+    # Saves the entity
+    client.put(conference)
+
+    app.config.conferences = fetch_conferences()
+    app.config.meetings = load_meetings(app.config.full_dates,
+                                        app.config.integers,
+                                        app.config.date_int,
+                                        config.conferences,
+                                        app.config.all_meetings)
+    return redirect('/list_conferences')
 
 
 if __name__ == "__main__":

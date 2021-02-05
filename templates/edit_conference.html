@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block head %}{% endblock %}
+{% block content %}
+<h3> Edit {{conference['title']}}</h3>
+<form action="{{ url_for('update_conference') }}" method="post">
+    <div class="mb-3">
+        <label for="conferenceTitle" class="form-label">Title</label>
+        <input type="text" class="form-control" id="conferenceTitle" name="conferenceTitle" value="{{ conference['title'] }}">
+    </div>
+    <div class="mb-3">
+        <label for="conferenceDescription" class="form-label">Description</label>
+        <input type="text" class="form-control" id="conferenceDescription" name="conferenceDescription"
+               value="{{ conference['description'] }}">
+    </div>
+    <div class="mb-3">
+        <label for="conferenceDate" class="form-label">Date</label>
+        <input type="text" class="form-control" id="conferenceDate" name="conferenceDate" value="{{ conference['date'] }}"
+    </div>
+    <div class="mb-3">
+        <label for="conferenceTime" class="form-label">Time</label>
+        <input type="text" class="form-control" id="conferenceTime" name="conferenceTime" value="{{ conference['time'] }}"
+    </div>
+    <div class="mb-3">
+        <label for="conferenceLink" class="form-label">Link</label>
+        <input type="text" class="form-control" id="conferenceLink" name="conferenceLink" value="{{ conference['link'] }}">
+    </div>
+    <input type="hidden" id="index_pos" name="index_pos" value="{{ index_pos }}">
+    <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+</form>
+<p><a class="btn btn-secondary" href="/list_meetings" role="button"> Back </a></p>
+{% endblock %}

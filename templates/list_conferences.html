@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block head %}{% endblock %}
+{% block content %}
+<main role="main">
+    <div class=container>
+        <p><a class="btn btn-secondary" href="/new_conference" role="button"> New Conference </a>
+        <a class="btn btn-secondary" href="/" role="button"> Home </a></p>
+        <h3> Conferences List</h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">Frequency</th>
+                <th scope="col">Link</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for conference in config.conferences %}
+            <tr>
+                <th scope="row">{{ conference['title'] }}</th>
+                <td>{{ conference['description'] }}</td>
+                <td>{{ conference['date'] }}</td>
+                <td>{{ conference['time'] }}</td>
+                <td>{{ conference['frequency'] }}</td>
+                <td>{{ conference['link'] }}</td>
+                <td><a class="btn btn-secondary btn-sm" href="{{url_for('edit_conference', index_position = loop.index-1 )}}"
+                       role="button">Edit</a></td>
+                <td><a class="btn btn-secondary btn-sm" href="{{url_for('delete_conference', index_position = loop.index-1 )}}"
+                       role="button">Delete</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+{% endblock %}
