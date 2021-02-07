@@ -94,8 +94,7 @@ additional_info = [
         'header': 'Primary',
         'description': 'Additional Links for Primary Students',
         'links': {
-            'Primary Emoji Slides': '/coming_soon',
-            'Other Fun Activities': '/coming_soon'
+            'Primary Emoji Slides': 'https://docs.google.com/presentation/d/1d9JFsR3vFhMEOcVEK-m9Z8AKMOrcorhB-r486o2FRqs/present?slide=id.g8c650170ce_0_3'
         }
     },
     {

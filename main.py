@@ -4,6 +4,22 @@ import os
 from helper_functions import get_dates, load_meetings
 from datastore_helper import fetch_meetings, fetch_conferences
 from google.cloud import datastore
+from flask_httpauth import HTTPDigestAuth
+
+auth = HTTPDigestAuth()
+
+users = {
+    "bishop": "mathews",
+    "paul": "1234qwer"
+}
+
+
+@auth.get_password
+def get_pw(username):
+    if username in users:
+        return users.get(username)
+    return None
+
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "kingsbridge2-81ce0161a48e.json"
 app = Flask(__name__)
@@ -53,17 +69,11 @@ def modify():
     return redirect('/')
 
 
-@app.route('/list_meetings')
-def list_meetings():
-    return render_template('list_meetings.html',
-                           title='Meetings List'
-                           )
-
-
-@app.route('/list_conferences')
-def list_conferences():
-    return render_template('list_conferences.html',
-                           title='Conference List'
+@app.route('/admin')
+@auth.login_required
+def admin():
+    return render_template('admin.html',
+                           title='Admin Portal'
                            )
 
 
@@ -78,6 +88,7 @@ def edit():
 
 
 @app.route('/edit_conference', methods=['GET'])
+@auth.login_required
 def edit_conference():
     index_pos = int(request.args.get('index_position'))
     return render_template('edit_conference.html',
@@ -125,6 +136,7 @@ def new():
 
 
 @app.route('/new_conference')
+@auth.login_required
 def new_conference():
     return render_template('new_conference.html',
                            title='Create Conference'
