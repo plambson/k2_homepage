@@ -1,23 +1,20 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, flash
 import config
 import os
+import user_list
 from helper_functions import get_dates, load_meetings
 from datastore_helper import fetch_meetings, fetch_conferences
 from google.cloud import datastore
 from flask_httpauth import HTTPDigestAuth
 
 auth = HTTPDigestAuth()
-
-users = {
-    "bishop": "mathews",
-    "paul": "1234qwer"
-}
+user_list.users
 
 
 @auth.get_password
 def get_pw(username):
-    if username in users:
-        return users.get(username)
+    if username in user_list.users:
+        return user_list.users.get(username)
     return None
 
 
@@ -39,6 +36,7 @@ app.config.accordions = config.additional_info
 
 @app.route('/')
 def index():
+    # flash("Please note, due to inclement weather sacrament meeting is cancelled on February 7", 'warning')
     return render_template('index.html',
                            title='Kingsbridge Home Page'
                            )
@@ -110,7 +108,7 @@ def delete():
                                         app.config.date_int,
                                         app.config.conferences,
                                         app.config.all_meetings)
-    return redirect('/list_meetings')
+    return redirect('/admin')
 
 
 @app.route('/delete_conference', methods=['GET', 'POST'])
@@ -125,7 +123,7 @@ def delete_conference():
                                         app.config.date_int,
                                         app.config.conferences,
                                         app.config.all_meetings)
-    return redirect('/list_conferences')
+    return redirect('/admin')
 
 
 @app.route('/new')
@@ -174,7 +172,7 @@ def update():
                                         app.config.date_int,
                                         config.conferences,
                                         app.config.all_meetings)
-    return redirect('/list_meetings')
+    return redirect('/admin')
 
 
 @app.route('/update_conference', methods=['POST'])
@@ -196,7 +194,7 @@ def update_conference():
                                         app.config.date_int,
                                         config.conferences,
                                         app.config.all_meetings)
-    return redirect('/list_conferences')
+    return redirect('/admin')
 
 
 @app.route('/create', methods=['POST'])
@@ -233,12 +231,11 @@ def create():
                                         app.config.date_int,
                                         config.conferences,
                                         app.config.all_meetings)
-    return redirect('/list_meetings')
+    return redirect('/admin')
 
 
 @app.route('/create_conference', methods=['POST'])
 def create_conference():
-
     client = datastore.Client()
     kind = "conference"
     name = request.form.get('conferenceTitle')
@@ -259,7 +256,7 @@ def create_conference():
                                         app.config.date_int,
                                         config.conferences,
                                         app.config.all_meetings)
-    return redirect('/list_conferences')
+    return redirect('/admin')
 
 
 if __name__ == "__main__":

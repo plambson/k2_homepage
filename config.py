@@ -66,6 +66,11 @@ meetings = [
     }
 ]
 
+users = {
+    "bishop": "mathews",
+    "paul": "1234qwer"
+}
+
 header = {
     'title': 'Kingsbridge 2nd Ward',
     'subtitle': 'A resource for members and visitors of The Church of Jesus Christ of Latter-Day Saints in Bronx, NYC.',
